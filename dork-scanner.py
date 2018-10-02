@@ -73,7 +73,7 @@ def export_to_txt(urls):
 
 def main():
       usage = """      Usage:
-        Mass_Exploiter.py <search> <engine> <pages> <processes>
+        dork-scanner.py <search> <engine> <pages> <processes>
 
             <search>          String to be searched for 
             <engine>          Search engine to be used
