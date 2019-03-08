@@ -1,7 +1,7 @@
 import requests, re, sys, time,os
 from bs4 import BeautifulSoup
 from functools import partial
-from multiprocess import Pool, TimeoutError, cpu_count
+from multiprocessing import Pool, TimeoutError, cpu_count
 from fake_useragent import UserAgent
 
 #set random user agent
@@ -108,10 +108,11 @@ def main():
             pages.append(p*10)
 
       p = Pool(proc) 
-      print "#"*50
-      print "Searching for: "+str(string)+" in "+str(page)+" page(s) of "+str(engine)+" with "+str(proc)+" process(es)"
-      print "#"*50
-      print "\n"
+      print ("#"*50)
+      #print "Searching for: "+str(string)+" in "+str(page)+" page(s) of "+str(engine)+" with "+str(proc)+" process(es)"
+      print ("Searching for: {} in {} page(s) of {} with {} process(es)".format(str(page),str(string),str(engine),str(proc)))
+      print ("#"*50)
+      print ("\n")
       if engine == "google":
           search = Google(engine)
           request = partial( search.search_for, string )
@@ -133,11 +134,11 @@ def main():
             result += [ u for u in p]
             printf( set( result ) )
       export_to_txt(result)
-      print "\n"
-      print "#"*50
-      print( " Number of urls : " + str( len( result ) ) )
-      print( " Finished in : " + str( int( time.time() - start_time ) ) + "s")
-      print "#"*50
+      print ("\n")
+      print ("#"*50)
+      print( " Number of urls : {}" . format( str( len( result ) ) ))
+      print( " Finished in : {} s" . format( str( int( time.time() - start_time ) )))
+      print ("#"*50)
 
 if __name__ == '__main__':
       main()
