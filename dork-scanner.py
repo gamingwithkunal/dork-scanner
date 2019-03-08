@@ -70,7 +70,7 @@ def printf(lista):
 
 def export_to_txt(urls):
   #Save URL list in the same directory as script
-  path = os.path.dirname(os.path.realpath(__FILE__))
+  path = os.path.dirname(os.path.realpath(__file__))
   with open(os.path.join(path,'URL_LIST.txt'),'w') as file:
       for url in urls:
           print>>file, url
