@@ -2,6 +2,10 @@ import requests, re, sys, time
 from bs4 import BeautifulSoup
 from functools import partial
 from multiprocess import Pool, TimeoutError, cpu_count
+from fake_useragent import UserAgent
+
+#set random user agent
+ua = UserAgent().random
 
 class SearchEngine():
     def __init__(self, name):
@@ -12,7 +16,7 @@ class Google(SearchEngine):
     def search_for(self, string, start):
         urls = []
         payload = { 'q' : string, 'start' : start }
-        headers = { 'User-agent' : 'Mozilla/11.0' }
+        headers = { 'User-agent' : ua }
         req = requests.get( 'http://www.google.com/search',payload, headers = headers )
         soup = BeautifulSoup( req.text, 'html.parser' )
         h3tags = soup.find_all( 'h3', class_='r' )
@@ -27,7 +31,7 @@ class Bing(SearchEngine):
     def search_for(self, string, start):
         urls = []
         payload = { 'q' : string, 'first' : start }
-        headers = { 'User-agent' : 'Mozilla/11.0' }
+        headers = { 'User-agent' : ua }
         req = requests.get( 'https://www.bing.com/search',payload, headers = headers )
         soup = BeautifulSoup( req.text, 'html.parser' )
         h3tags = soup.find_all( 'li', class_='b_algo' )
@@ -42,7 +46,7 @@ class Baidu(SearchEngine):
     def search_for(self, string, start):
         urls = []
         payload = { 'wd' : string, 'pn' : start }
-        headers = { 'User-agent' : 'Mozilla/11.0' }
+        headers = { 'User-agent' : ua }
         req = requests.get( 'http://www.baidu.com/s',payload, headers = headers)
         soup = BeautifulSoup( req.text, 'html.parser' )
         h3tags = soup.find_all( 'h3', class_='t' )
@@ -102,9 +106,9 @@ def main():
             pages.append(p*10)
 
       p = Pool(proc) 
-      print "#################################################"
+      print "#"*50
       print "Searching for: "+str(string)+" in "+str(page)+" page(s) of "+str(engine)+" with "+str(proc)+" process(es)"
-      print "#################################################"
+      print "#"*50
       print "\n"
       if engine == "google":
           search = Google(engine)
@@ -128,10 +132,10 @@ def main():
             printf( set( result ) )
       export_to_txt(result)
       print "\n"
-      print "#################################################"
+      print "#"*50
       print( " Number of urls : " + str( len( result ) ) )
       print( " Finished in : " + str( int( time.time() - start_time ) ) + "s")
-      print "#################################################"
+      print "#"*50
 
 if __name__ == '__main__':
       main()
