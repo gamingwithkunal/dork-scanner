@@ -1,4 +1,4 @@
-import requests, re, sys, time
+import requests, re, sys, time,os
 from bs4 import BeautifulSoup
 from functools import partial
 from multiprocess import Pool, TimeoutError, cpu_count
@@ -69,9 +69,11 @@ def printf(lista):
             print( " " + ch2 )
 
 def export_to_txt(urls):
-  with open('file.txt','w') as file:
-      for item in urls:
-          print>>file, item
+  #Save URL list in the same directory as script
+  path = os.path.dirname(os.path.realpath(__FILE__))
+  with open(os.path.join(path,'URL_LIST.txt'),'w') as file:
+      for url in urls:
+          print>>file, url
 
 
 
