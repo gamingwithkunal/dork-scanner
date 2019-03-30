@@ -1,7 +1,11 @@
-import requests, re, sys, time
+import requests, re, sys, time,os
 from bs4 import BeautifulSoup
 from functools import partial
-from multiprocess import Pool, TimeoutError, cpu_count
+from multiprocessing import Pool, TimeoutError, cpu_count
+from fake_useragent import UserAgent
+
+#set random user agent
+ua = UserAgent().random
 
 class SearchEngine():
     def __init__(self, name):
@@ -12,7 +16,7 @@ class Google(SearchEngine):
     def search_for(self, string, start):
         urls = []
         payload = { 'q' : string, 'start' : start }
-        headers = { 'User-agent' : 'Mozilla/11.0' }
+        headers = { 'User-agent' : ua }
         req = requests.get( 'http://www.google.com/search',payload, headers = headers )
         soup = BeautifulSoup( req.text, 'html.parser' )
         h3tags = soup.find_all( 'h3', class_='r' )
@@ -27,7 +31,7 @@ class Bing(SearchEngine):
     def search_for(self, string, start):
         urls = []
         payload = { 'q' : string, 'first' : start }
-        headers = { 'User-agent' : 'Mozilla/11.0' }
+        headers = { 'User-agent' : ua }
         req = requests.get( 'https://www.bing.com/search',payload, headers = headers )
         soup = BeautifulSoup( req.text, 'html.parser' )
         h3tags = soup.find_all( 'li', class_='b_algo' )
@@ -42,7 +46,7 @@ class Baidu(SearchEngine):
     def search_for(self, string, start):
         urls = []
         payload = { 'wd' : string, 'pn' : start }
-        headers = { 'User-agent' : 'Mozilla/11.0' }
+        headers = { 'User-agent' : ua }
         req = requests.get( 'http://www.baidu.com/s',payload, headers = headers)
         soup = BeautifulSoup( req.text, 'html.parser' )
         h3tags = soup.find_all( 'h3', class_='t' )
@@ -65,9 +69,11 @@ def printf(lista):
             print( " " + ch2 )
 
 def export_to_txt(urls):
-  with open('file.txt','w') as file:
-      for item in urls:
-          print>>file, item
+  #Save URL list in the same directory as script
+  path = os.path.dirname(os.path.realpath(__file__))
+  with open(os.path.join(path,'URL_LIST.txt'),'w') as file:
+      for url in urls:
+          print>>file, url
 
 
 
@@ -102,10 +108,11 @@ def main():
             pages.append(p*10)
 
       p = Pool(proc) 
-      print "#################################################"
-      print "Searching for: "+str(string)+" in "+str(page)+" page(s) of "+str(engine)+" with "+str(proc)+" process(es)"
-      print "#################################################"
-      print "\n"
+      print ("#"*50)
+      #print "Searching for: "+str(string)+" in "+str(page)+" page(s) of "+str(engine)+" with "+str(proc)+" process(es)"
+      print ("Searching for: {} in {} page(s) of {} with {} process(es)".format(str(page),str(string),str(engine),str(proc)))
+      print ("#"*50)
+      print ("\n")
       if engine == "google":
           search = Google(engine)
           request = partial( search.search_for, string )
@@ -127,11 +134,11 @@ def main():
             result += [ u for u in p]
             printf( set( result ) )
       export_to_txt(result)
-      print "\n"
-      print "#################################################"
-      print( " Number of urls : " + str( len( result ) ) )
-      print( " Finished in : " + str( int( time.time() - start_time ) ) + "s")
-      print "#################################################"
+      print ("\n")
+      print ("#"*50)
+      print( " Number of urls : {}" . format( str( len( result ) ) ))
+      print( " Finished in : {} s" . format( str( int( time.time() - start_time ) )))
+      print ("#"*50)
 
 if __name__ == '__main__':
       main()
