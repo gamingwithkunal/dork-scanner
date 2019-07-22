@@ -19,10 +19,10 @@ class Google(SearchEngine):
         headers = { 'User-agent' : ua }
         req = requests.get( 'http://www.google.com/search',payload, headers = headers )
         soup = BeautifulSoup( req.text, 'html.parser' )
-        h3tags = soup.find_all( 'h3', class_='r' )
+        h3tags = soup.findAll('cite',attrs={'class':'iUh30'})
         for h3 in h3tags:
             try:
-                urls.append( re.search('url\?q=(.+?)\&sa', h3.a['href']).group(1) )
+                urls.append( h3.text )
             except:
                 continue
         return urls
@@ -68,15 +68,6 @@ def printf(lista):
             ch2 = ch.replace("%3D","=")
             print( " " + ch2 )
 
-def export_to_txt(urls):
-  #Save URL list in the same directory as script
-  path = os.path.dirname(os.path.realpath(__file__))
-  with open(os.path.join(path,'URL_LIST.txt'),'w') as file:
-      for url in urls:
-          print>>file, url
-
-
-
 def main():
       usage = """      Usage:
         dork-scanner.py <search> <engine> <pages> <processes>
@@ -110,7 +101,7 @@ def main():
       p = Pool(proc) 
       print ("#"*50)
       #print "Searching for: "+str(string)+" in "+str(page)+" page(s) of "+str(engine)+" with "+str(proc)+" process(es)"
-      print ("Searching for: {} in {} page(s) of {} with {} process(es)".format(str(page),str(string),str(engine),str(proc)))
+      print ("Searching for: {} in {} page(s) of {} with {} process(es)".format(str(string),str(page),str(engine),str(proc)))
       print ("#"*50)
       print ("\n")
       if engine == "google":
@@ -133,7 +124,6 @@ def main():
       for p in all:
             result += [ u for u in p]
             printf( set( result ) )
-      export_to_txt(result)
       print ("\n")
       print ("#"*50)
       print( " Number of urls : {}" . format( str( len( result ) ) ))
