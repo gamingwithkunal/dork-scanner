@@ -1,11 +1,17 @@
-import requests, re, sys, time,os
+import requests, re, sys, time,os, argparse
 from bs4 import BeautifulSoup
 from functools import partial
 from multiprocessing import Pool, TimeoutError, cpu_count
 from fake_useragent import UserAgent
 
-#set random user agent
 ua = UserAgent().random
+
+parser = argparse.ArgumentParser(description='Argument parser for dork-scanner')
+parser.add_argument('-S', '--search', help='String to be searched for', default='1')
+parser.add_argument('-E', '--engine', help='Search engine to be used', default='1')
+parser.add_argument('-P', '--page', help='Number of pages to search in', default='1')
+parser.add_argument('-Pr', '--process', help='Number of parallel processes', default='1')
+results = parser.parse_args(sys.argv[1:])
 
 class SearchEngine():
     def __init__(self, name):
@@ -69,27 +75,14 @@ def printf(lista):
             print( " " + ch2 )
 
 def main():
-      usage = """      Usage:
-        dork-scanner.py <search> <engine> <pages> <processes>
-
-            <search>          String to be searched for 
-            <engine>          Search engine to be used
-            <pages>           Number of pages to search in
-            <processes>       Number of parallel processes"""
 
       try:
-            string = sys.argv[1]
-            engine = sys.argv[2]
-            page   = sys.argv[3]
-            proc    = int( sys.argv[4]  )
-
-            if string.lower() == "-h" or string.lower() == "--help":
-                  print(usage)
-                  exit(0)
-
+            string = results.search
+            engine = results.engine
+            page   = results.page
+            proc    = int( results.process  )
       except:
             print(" * * Error * * Arguments missing")
-            print("\n"+usage)
             exit(0)
       start_time = time.time()
       result = []
