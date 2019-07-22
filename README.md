@@ -7,7 +7,7 @@ dork scanning tool built in python. It scrapes web search engines with dorks you
             <pages>           Number of pages to search in
             <processes>       Number of parallel processes
 
-# auto-inject
+# dork-scanner
 This script is an automated tool to parse search engines with provided dorks in order to find vulnerable urls. This tool supports google, bing and baidu.
 ## Requirements
 - Python 3
