@@ -13,13 +13,23 @@ git clone https://github.com/GuestGuri/dork-scanner.git
 pip3 install -r requirements.txt
 ```
 ## Usage
-``` python3 dork-scanner.py <search> <engine> <pages> <processes> ```
--            <search>          String to be searched for 
--            <engine>          Search engine to be used
--            <pages>           Number of pages to search in
--            <processes>       Number of parallel processes"""
+``` usage: dork-scanner.py [-h] [-S SEARCH] [-E ENGINE] [-P PAGE] [-Pr PROCESS] ```
+-S, --search 
+- String to be searched for
+
+-E, --engine
+
+- Search engine to be used (google, bing, baidu)
+
+-P, --page
+- Number of pages to search in
+
+-Pr, --process
+- Number of parallel processes
+
 ## Examples
-``` python3 dork-scanner.py inurl:php?=id1 google 3 3 ```
+``` python3 dork-scanner.py --search inurl:php?=id1 --engine google --page 3 --process 3 ```
 search for inurl:php?=id1 in 3 pages of google using 3 processes
 ## Author
-Author: Mohamed Ghassen Gargouri 
+- Author: Mohamed Ghassen Gargouri 
+- LinkedIn : https://www.linkedin.com/in/mohamed-ghassen-gargouri/
