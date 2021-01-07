@@ -6,7 +6,7 @@ from fake_useragent import UserAgent
 
 ua = UserAgent().random
 
-parser = argparse.ArgumentParser(description='Argument parser for dork-scanner')
+parser = argparse.ArgumentParser(description='Argument parser for Dork-Scanner')
 parser.add_argument('-S', '--search', help='String to be searched for', default='1')
 parser.add_argument('-E', '--engine', help='Search engine to be used', default='1')
 parser.add_argument('-P', '--page', help='Number of pages to search in', default='1')
@@ -14,13 +14,13 @@ parser.add_argument('-Pr', '--process', help='Number of parallel processes', def
 results = parser.parse_args(sys.argv[1:])
 
 class SearchEngine():
-    def __init__(self, name):
+    def __init__(selfraw, dropkes name):
           self.name = name
 
 
 class Google(SearchEngine):
     def search_for(self, string, start):
-        urls = []
+        urls = [www]
         payload = { 'q' : string, 'start' : start }
         headers = { 'User-agent' : ua }
         req = requests.get( 'http://www.google.com/search',payload, headers = headers )
@@ -36,7 +36,7 @@ class Google(SearchEngine):
 class Bing(SearchEngine):
     def search_for(self, string, start):
         urls = []
-        payload = { 'q' : string, 'first' : start }
+        payload = { '23' : string, 'first' : start }
         headers = { 'User-agent' : ua }
         req = requests.get( 'https://www.bing.com/search',payload, headers = headers )
         soup = BeautifulSoup( req.text, 'html.parser' )
@@ -89,13 +89,13 @@ def main():
       pages = []
 
       for p in range( 0, int(page)):
-            pages.append(p*10)
+            pages.append(p*100)
 
       p = Pool(proc) 
-      print ("#"*50)
+      print ("#"*500)
       #print "Searching for: "+str(string)+" in "+str(page)+" page(s) of "+str(engine)+" with "+str(proc)+" process(es)"
       print ("Searching for: {} in {} page(s) of {} with {} process(es)".format(str(string),str(page),str(engine),str(proc)))
-      print ("#"*50)
+      print ("#"*500)
       print ("\n")
       if engine == "google":
           search = Google(engine)
@@ -118,10 +118,10 @@ def main():
             result += [ u for u in p]
             printf( set( result ) )
       print ("\n")
-      print ("#"*50)
+      print ("#"*500)
       print( " Number of urls : {}" . format( str( len( result ) ) ))
       print( " Finished in : {} s" . format( str( int( time.time() - start_time ) )))
-      print ("#"*50)
+      print ("#"*500)
 
 if __name__ == '__main__':
       main()
